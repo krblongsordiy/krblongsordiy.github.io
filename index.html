@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#000000">
+    <meta name="description" content="Kajian Risiko Bencana (KRB) Tanah Longsor di 56 Desa di D.I. Yogyakarta">
+    <meta name="author" content="BPBD DIY">
+    <title>Kajian Risiko Bencana</title>
+
+    <link rel="stylesheet" href="assets/bootstrap/3.3.5/css/bootstrap.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/leaflet.css">
+    <link rel="stylesheet" href="assets/leaflet-locatecontrol/L.Control.Locate.css">
+    <link rel="stylesheet" href="assets/leaflet-layercontroltree/L.Control.Layers.Tree.css">
+    <link rel="stylesheet" href="https://krblongsordiy.000webhostapp.com/assets/css/app.css">
+
+    <link rel="apple-touch-icon" sizes="76x76" href="assets/img/favicon-76.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="assets/img/favicon-120.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="assets/img/favicon-152.png">
+    <link rel="icon" sizes="196x196" href="assets/img/favicon-196.png">
+    <link rel="icon" type="image/x-icon" href="assets/img/favbpbddiy.png">
+    <!-- Google Analytics -->
+    <script src="assets/js/gtag.js"></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <div class="navbar-icon-container">
+            <a href="#" class="navbar-icon pull-right visible-xs" id="nav-btn"><i class="fa fa-bars fa-lg black"></i></a>
+          </div>
+          <a class="navbar-brand" href="#" style="color: #000;">KRB Tanah Longsor DIY</a>
+        </div>
+        <div class="navbar-collapse collapse navbar-right">
+          <form class="navbar-form navbar-right" role="search">
+            <div class="form-group has-feedback" data-toggle="tooltip" title="Pencarian lokasi berdasarkan nama">
+                <input id="searchbox" type="text" placeholder="Cari" class="form-control">
+                <span id="searchicon" class="fa fa-search form-control-feedback"></span>
+            </div>
+          </form>
+          <ul class="nav navbar-nav"> 
+            <li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="legend-btn"><i class="fa fa-picture-o black"></i>&nbsp;&nbsp;Legenda</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" id="extentDrop" href="#" role="button" data-toggle="dropdown"><i class="fa fa-ellipsis-v black"></i>&nbsp;&nbsp;Tampilkan Lokasi<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="full-extent-btn"><i class="fa fa-thumb-tack"></i>&nbsp;&nbsp;DIY</a></li>
+                <li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="kulonprogo-extent-btn"><i class="fa fa-thumb-tack"></i>&nbsp;&nbsp;Kulon Progo</a></li>
+                <li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="gunungkidul-extent-btn"><i class="fa fa-thumb-tack"></i>&nbsp;&nbsp;Gunungkidul</a></li>
+                <li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="bantul-extent-btn"><i class="fa fa-thumb-tack"></i>&nbsp;&nbsp;Bantul</a></li>
+              </ul>
+            </li>
+            <li><a href="downloadpeta" data-toggle="collapse tooltip" data-target=".navbar-collapse.in" id="peta-bahaya-btn" title="Galeri Peta format PDF yang siap cetak pada kertas ukuran A1"><i class="fa fa-download black"></i>&nbsp;&nbsp;Download Peta PDF</a></li>
+            <li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="about-btn"><i class="fa fa-info-circle black"></i>&nbsp;&nbsp;Tentang</a></li>
+          </ul>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </div>
+
+    <div id="container">
+      <div id="map"></div>
+    </div>
+    <div id="loading">
+      <div class="loading-indicator">
+        <div class="progress progress-striped active">
+          <div class="progress-bar progress-bar-warning progress-bar-full black">Memanggil data . . .</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header bg-black">
+            <button class="close white" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title white">Web Kajian Risiko Bencana (KRB) Tanah Longsor DIY</h4>
+          </div>
+          <div class="modal-body">
+            <ul class="nav nav-tabs nav-justified" id="aboutTabs">
+              <li class="active"><a href="#about" data-toggle="tab"><i class="fa fa-question-circle"></i>&nbsp;Tentang</a></li>
+              <li><a href="#contact" data-toggle="tab"><i class="fa fa-envelope"></i>&nbsp;Info</a></li>
+            </ul>
+            <div class="tab-content" id="aboutTabsContent">
+              <div class="tab-pane fade active in" id="about">
+                <p>Web ini menyajikan hasil Kajian Risiko Bencana (KRB) Tanah Longsor di 56 desa di D.I.Yogyakarta pada kegiatan tahun 2016-2018.<br>Daftar 56 desa wilayah kajian sebagai berikut:<br></p>
+                <span class="glyphicon glyphicon-chevron-right"></span> <b>Kajian Risiko Bencana Longsor Tahun 2016</b><br>
+                <table class='table table-striped table-bordered table-condensed'>
+                  <tr><th width='7px'>No</th><th>Kabupaten</th><th>Kecamatan</th><th>Desa</th></tr>
+                  <tr><td>1</td><td>Kulon Progo</td><td>Girimulyo</td><td>Jatimulyo</td></tr>
+                  <tr><td>2</td><td>Kulon Progo</td><td>Girimulyo</td><td>Purwosari</td></tr>
+                  <tr><td>3</td><td>Kulon Progo</td><td>Kalibawang</td><td>Banjarasri</td></tr>
+                  <tr><td>4</td><td>Kulon Progo</td><td>Kokap</td><td>Hargowilis</td></tr>
+                  <tr><td>5</td><td>Kulon Progo</td><td>Kokap</td><td>Kalirejo</td></tr>
+                </table>
+                <br>
+                <span class="glyphicon glyphicon-chevron-right"></span> <b>Kajian Risiko Bencana Longsor Tahun 2017</b><br>
+                <table class='table table-striped table-bordered table-condensed'>
+                  <tr><th width='7px'>No</th><th>Kabupaten</th><th>Kecamatan</th><th>Desa</th></tr>
+                  <tr><td>1</td><td>Bantul</td><td>Piyungan</td><td>Srimulyo</td></tr>
+                  <tr><td>2</td><td>Gunungkidul</td><td>Gedang Sari</td><td>Mertelu</td></tr>
+                  <tr><td>3</td><td>Gunungkidul</td><td>Gedang Sari</td><td>Ngalang</td></tr>
+                  <tr><td>4</td><td>Gunungkidul</td><td>Ngawen</td><td>Beji</td></tr>
+                  <tr><td>5</td><td>Gunungkidul</td><td>Ngawen</td><td>Jurangjero</td></tr>
+                  <tr><td>6</td><td>Gunungkidul</td><td>Patuk</td><td>Semoyo</td></tr>
+                  <tr><td>7</td><td>Gunungkidul</td><td>Patuk</td><td>Putat</td></tr>
+                  <tr><td>8</td><td>Kulon Progo</td><td>Girimulyo</td><td>Giripurwo</td></tr>
+                  <tr><td>9</td><td>Kulon Progo</td><td>Girimulyo</td><td>Pendoworejo</td></tr>
+                  <tr><td>10</td><td>Kulon Progo</td><td>Kalibawang</td><td>Banjararum</td></tr>
+                  <tr><td>11</td><td>Kulon Progo</td><td>Kalibawang</td><td>Banjarharjo</td></tr>
+                  <tr><td>12</td><td>Kulon Progo</td><td>Kalibawang</td><td>Banjaroyo</td></tr>
+                  <tr><td>13</td><td>Kulon Progo</td><td>Samigaluh</td><td>Banjarsari</td></tr>
+                  <tr><td>14</td><td>Kulon Progo</td><td>Samigaluh</td><td>Gerbosari</td></tr>
+                  <tr><td>15</td><td>Kulon Progo</td><td>Samigaluh</td><td>Ngargosari</td></tr>
+                  <tr><td>16</td><td>Kulon Progo</td><td>Samigaluh</td><td>Pagerharjo</td></tr>
+                  <tr><td>17</td><td>Kulon Progo</td><td>Samigaluh</td><td>Purwoharjo</td></tr>
+                  <tr><td>18</td><td>Kulon Progo</td><td>Samigaluh</td><td>Sidoharjo</td></tr>
+                </table>
+                <br>
+                <span class="glyphicon glyphicon-chevron-right"></span> <b>Kajian Risiko Bencana Longsor Tahun 2018</b><br>
+                <table class='table table-striped table-bordered table-condensed'>
+                  <tr><th width='7px'>No</th><th>Kabupaten</th><th>Kecamatan</th><th>Desa</th></tr>
+                  <tr><td>1</td><td>Bantul</td><td>Banguntapan</td><td>Banguntapan</td></tr>
+                  <tr><td>2</td><td>Bantul</td><td>Banguntapan</td><td>Tamanan</td></tr>
+                  <tr><td>3</td><td>Bantul</td><td>Dlingo</td><td>Mangunan</td></tr>
+                  <tr><td>4</td><td>Bantul</td><td>Dlingo</td><td>Terong</td></tr>
+                  <tr><td>5</td><td>Bantul</td><td>Imogiri</td><td>Girirejo</td></tr>
+                  <tr><td>6</td><td>Bantul</td><td>Imogiri</td><td>Karangtengah</td></tr>
+                  <tr><td>7</td><td>Bantul</td><td>Imogiri</td><td>Selopamioro</td></tr>
+                  <tr><td>8</td><td>Bantul</td><td>Imogiri</td><td>Sriharjo</td></tr>
+                  <tr><td>9</td><td>Bantul</td><td>Kasihan</td><td>Ngestiharjo</td></tr>
+                  <tr><td>10</td><td>Bantul</td><td>Kasihan</td><td>Tirtonirmala</td></tr>
+                  <tr><td>11</td><td>Bantul</td><td>Kretek</td><td>Parangtritis</td></tr>
+                  <tr><td>12</td><td>Bantul</td><td>Pleret</td><td>Bawuran</td></tr>
+                  <tr><td>13</td><td>Bantul</td><td>Pundong</td><td>Seloharjo</td></tr>
+                  <tr><td>14</td><td>Bantul</td><td>Sewon</td><td>Bangunharjo</td></tr>
+                  <tr><td>15</td><td>Gunungkidul</td><td>Gedang Sari</td><td>Sampang</td></tr>
+                  <tr><td>16</td><td>Gunungkidul</td><td>Gedang Sari</td><td>Serut</td></tr>
+                  <tr><td>17</td><td>Gunungkidul</td><td>Gedang Sari</td><td>Tegalrejo</td></tr>
+                  <tr><td>18</td><td>Gunungkidul</td><td>Gedang Sari</td><td>Watu gajah</td></tr>
+                  <tr><td>19</td><td>Gunungkidul</td><td>Girisubo</td><td>Jeruk wudel</td></tr>
+                  <tr><td>20</td><td>Gunungkidul</td><td>Ngawen</td><td>Sambirejo</td></tr>
+                  <tr><td>21</td><td>Gunungkidul</td><td>Nglipar</td><td>Katongan</td></tr>
+                  <tr><td>22</td><td>Gunungkidul</td><td>Nglipar</td><td>Kedungpoh</td></tr>
+                  <tr><td>23</td><td>Gunungkidul</td><td>Nglipar</td><td>Pilangrejo</td></tr>
+                  <tr><td>24</td><td>Gunungkidul</td><td>Patuk</td><td>Bunder</td></tr>
+                  <tr><td>25</td><td>Gunungkidul</td><td>Patuk</td><td>Nglanggeran</td></tr>
+                  <tr><td>26</td><td>Gunungkidul</td><td>Patuk</td><td>Nglegi</td></tr>
+                  <tr><td>27</td><td>Gunungkidul</td><td>Semin</td><td>Kalitekuk</td></tr>
+                  <tr><td>28</td><td>Gunungkidul</td><td>Semin</td><td>Karang sari</td></tr>
+                  <tr><td>29</td><td>Kulon Progo</td><td>Kokap</td><td>Hargomulyo</td></tr>
+                  <tr><td>30</td><td>Kulon Progo</td><td>Kokap</td><td>Hargorejo</td></tr>
+                  <tr><td>31</td><td>Kulon Progo</td><td>Kokap</td><td>Hargotirto</td></tr>
+                  <tr><td>32</td><td>Kulon Progo</td><td>Pengasih</td><td>Karangsari</td></tr>
+                  <tr><td>33</td><td>Kulon Progo</td><td>Pengasih</td><td>Sidomulyo</td></tr>
+                </table>
+              </div>
+              <div class="tab-pane fade" id="contact">
+                <p>Hasil Kerjasama</p>
+                <table class='table table-striped table-bordered table-condensed'>
+                  <tr><td style="text-align: center"><img src="assets/img/bpbddiy.png" width="100px"></td><td style="text-align: center"><img src="assets/img/madani.png" width="150px" title="Prof. Dulbahri&#xA;Lukman Hakim&#xA;R. Muhammad Anshori&#xA;Nandra Eko Nugroho"></td></tr>
+                  <tr><td style="text-align: center">BPBD D.I.Yogyakarta</td><td style="text-align: center">CV. Madani Callysta Saibuyun</td></tr>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-warning" data-dismiss="modal">Tutup</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div class="modal fade" id="legendModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header bg-black">
+            <button type="button" class="close white" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title white">Legenda</h4>
+          </div>
+          <div class="modal-body">
+            <p>Indeks Bahaya<br>
+            <img src="assets/img/index_bahaya_legend.png" width="300px"/></p>
+            <p>Indeks Kerentanan<br>
+            <img src="assets/img/index_bahaya_legend.png" width="300px"/></p>
+            <p>Indeks Kapasitas<br>
+            <img src="assets/img/index_kapasitas_legend.png" width="300px"/></p>
+            <p>Indeks Risiko<br>
+            <img src="assets/img/index_bahaya_legend.png" width="300px"/></p>
+            <p><img src="assets/img/legendlayer.png" width="300px"/></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-warning" data-dismiss="modal">Tutup</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div class="modal fade" id="featureModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header bg-black">
+            <button class="close white" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title white" id="feature-title"></h4>
+          </div>
+          <div class="modal-body" id="feature-info"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-warning" data-dismiss="modal">Tutup</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div class="modal fade" id="wellcomeModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title text-center"><div class="alert alert-danger">Testing Page</div></h4>
+          </div>
+          <div class="modal-body text-center">
+            <p><b>Web ini adalah hosting sementara untuk testing saja.<br>Semoga nantinya dipindah ke alamat web resmi BPBD DIY.</b></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-warning" data-dismiss="modal">Tutup</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="assets/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.10.5/typeahead.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.3/handlebars.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.1.1/list.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/leaflet.js"></script>
+    <script src="assets/leaflet-locatecontrol/L.Control.Locate.min.js"></script>
+    <script src="assets/leaflet-layercontroltree/L.Control.Layers.Tree.js"></script>
+    <script src="https://krblongsordiy.000webhostapp.com/data/js/balai_desa_56_diy.js"></script>
+    <script src="https://krblongsordiy.000webhostapp.com/data/js/desa_longsor_btl.js"></script>
+    <script src="https://krblongsordiy.000webhostapp.com/data/js/desa_longsor_gk.js"></script>
+    <script src="https://krblongsordiy.000webhostapp.com/data/js/desa_longsor_kp.js"></script>
+    <script src="https://krblongsordiy.000webhostapp.com/data/js/dusun_desa_56_diy.js"></script>
+    <script src="https://krblongsordiy.000webhostapp.com/data/js/jalan_arteri.js"></script>
+    <script src="https://krblongsordiy.000webhostapp.com/data/js/jalan_ka.js"></script>
+    <script src="https://krblongsordiy.000webhostapp.com/data/js/jalan_kolektor.js"></script>
+    <script src="https://krblongsordiy.000webhostapp.com/data/js/jalan_lokal_desa_56.js"></script>
+    <script src="https://krblongsordiy.000webhostapp.com/data/js/jalan_setapak_desa_56.js"></script>
+    <script src="https://krblongsordiy.000webhostapp.com/data/js/kabupaten_diy.js"></script>
+    <script src="https://krblongsordiy.000webhostapp.com/data/js/kecamatan_56_desa.js"></script>
+    <script src="https://krblongsordiy.000webhostapp.com/data/js/patahansesar.js"></script>
+    <script src="https://krblongsordiy.000webhostapp.com/data/js/sungai_56_desa_diy_line.js"></script>
+    <script src="https://krblongsordiy.000webhostapp.com/data/js/sungai_diy_polygon.js"></script>
+    <script src="assets/js/conf.js"></script>
+    <script src="assets/js/app.js"></script>
+  </body>
+</html>
