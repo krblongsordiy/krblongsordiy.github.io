@@ -80,3 +80,7 @@ hr {
 .menu-toggle:hover {
   background: #ff3333;
 }
+
+.rounded {
+  border-radius: 0.25rem !important;
+}
